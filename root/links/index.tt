@@ -1,0 +1,17 @@
+<h2>Links</h2>
+<div id="links">
+[% FOREACH field IN fields.keys.sort %]
+<div class="box">
+    <h3>[% field %]</h3>
+    [% FOREACH record IN fields.$field %]
+    <p><a href="[% record.href %]" title="[% record.title %]">[% record.name %]</a></p>
+    [% END %]
+</div>
+[% END %]
+</div>
+<script type="text/javascript">
+    $('#links').masonry({
+	columnWidth: 20,
+	itemSelector: '.box'
+    });
+</script>

@@ -1,0 +1,13 @@
+<h2>Photos Albums</h2>
+<div id="photos">
+[% FOREACH album IN albums %]
+<div class="box cover">
+    <h3>[% album.title %]</h3> 
+    <a href="[% c.uri_for('album', album.id)%]"><img title="[% album.numphotos %] foto presenti nell'album" src="[% album.icon %]"/></a>
+    [% IF album.published %]
+    <p>Published: [% album.published.dmy _' @ '_ album.published.strftime('%H:%M') %]</p>
+    [% END %]
+    <p>Update: <span >[% album.updated.dmy _' @ '_ album.updated.strftime('%H:%M') %]</span></p>
+</div>
+[% END %]
+</div>

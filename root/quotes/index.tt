@@ -1,0 +1,20 @@
+<h2>The Quotes
+<a href="[% c.uri_for('rss') %]"><img class="rss" src="/static/images/feed-icon-14x14.png" alt="rss" title="RSS"/></a>
+</h2>
+
+<table class="admin">
+<thead>
+<tr>
+    <th>Text</th>
+    <th>Source</th>
+</tr>
+</thead>
+<tbody>
+[% FOREACH id IN results.keys.sort %]
+<tr>
+    <td>[% results.$id.text %]</td>
+    <td>[% results.$id.source %]</td>
+</tr>
+[% END %]
+</tbody>
+</table>

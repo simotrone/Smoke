@@ -1,0 +1,178 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="it" lang="it">
+<head>
+    <title>[% name %][% ' - '_ title IF title %]</title>
+    <link rel="icon" href="favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css"/>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.masonry.min.js"></script>
+</head>
+<body>
+    <ul id="navbar">[% INCLUDE top_navbar %]</ul>
+
+    <div id="extern">
+    <div id="main">
+
+	[% IF left_sidebar %]
+	<!-- left sidebar -->
+	<div id="sidebar" class="left">
+	    <div style="margin: 10px;">
+	    [% INCLUDE in_left_sidebar %]
+	    </div>
+	</div>
+	[% END %]
+
+	<!-- right sidebar -->
+	<div id="sidebar" class="right">
+	    [% INCLUDE header %]
+	    [% IF right_sidebar %]
+	    [% INCLUDE in_right_sidebar %]
+	    [% END %]
+	    [% INCLUDE wise_quote %]
+	</div>
+
+	<!-- main content -->
+        <div id="content">
+	[% content %]
+	</div>
+
+    </div>
+    </div>
+
+    <p id="footer">[% INCLUDE footer %]</p>
+
+    <script type="text/javascript">
+	$('div#extra section.trunk h4').click( function() { $(this).next('div').slideUp("fast");} );
+	$('div#extra section.trunk h4').click( function() { $(this).next('div:hidden').slideDown("fast");} );
+    </script>
+    <script type="text/javascript">
+//<![CDATA[
+    $('#photos').masonry({
+	columnWidth: 20,
+	itemSelector: '.box'
+    });
+//]]>
+    </script>
+</body>
+</html>
+
+
+[% BLOCK top_navbar %]
+[% FOREACH item IN main_menu %]
+    <li> <a [% IF section == item.name %]class="selected"[% END %] href="[% item.path %]">[% item.name %]</a> </li>
+[% END %]
+[% END %]
+
+
+[% BLOCK in_right_sidebar %]
+[% FOREACH trunk IN right_sidebar %]
+<div class="section">
+    <h4>[% trunk.title %]</h4>
+    [% trunk.content %]
+</div>
+[% END %]
+[% END %]
+
+
+[% BLOCK in_left_sidebar %]
+<ul class="first">
+[% FOREACH item IN left_sidebar  %]
+    <li><a href="[% item.path %]">[% item.title%]</a>
+    [% INCLUDE in_left_sidebar_childs %]
+    </li>
+[% END %]
+</ul>
+[% END %]
+
+[% BLOCK in_left_sidebar_childs %]
+[% IF item.childs %]
+<ul class="sub">
+    [% FOREACH item IN item.childs %]
+    <li><a href="[% item.path %]">[% item.title%]</a>
+    [% INCLUDE in_left_sidebar_childs %]
+    </li>
+    [% END %]
+</ul>
+[% END %]
+[% END %]
+
+
+[% BLOCK header %]
+<div class="section">
+    <h4>Simotrone's Nest</h4>
+    <p id="header">Giocatore e perditempo, sysadmin e perlista, 
+    a noob with a clue... pacifico motociclista.</p>
+</div>
+[% END%]
+
+[% BLOCK wise_quote %]
+<div class="section">
+    <h4>Perle di Saggezza</h4>
+    <p id="cite_text">&#x00ab;<span>[% wise_quotes.text %]</span>&#x00bb;</p>
+    <p id="cite_source" style="text-align:right;">-- <span style="font-style: italic;">[% wise_quotes.source %]</span></p>
+    <script type="text/javascript">
+	//<![CDATA[
+    var Quote = function() {
+	this.p_txt = document.getElementById('cite_text').getElementsByTagName("span")[0];
+        this.p_src = document.getElementById('cite_source').getElementsByTagName("span")[0];
+	var arrayQuotes = new Array();
+	this.add = function(txt,src) {
+	    var q = new Object();
+	    q['text'] = txt;
+	    q['source'] = src;
+	    arrayQuotes.push(q);
+	}
+	this.clean = function() {
+	    arrayQuotes = [];
+	}
+	this.count = function() {
+	    return arrayQuotes.length;
+	}
+	this.random = function() {
+	    var i = Math.floor(Math.random() * this.count() );
+	    return arrayQuotes[i];	    
+	}
+    };
+    var req = new XMLHttpRequest();
+    var url = window.location.protocol +'//'+ window.location.host +'/quotes/json';
+    var quote = new Quote();
+    http_request();
+    function write_in() {
+	var q = quote.random();
+	quote.p_txt.innerHTML = q.text;
+	quote.p_src.innerHTML = q.source;
+    }
+
+    function http_request() {
+	req.onreadystatechange = handler;
+	req.open('GET',url,true);
+	req.send(null);
+    }
+    function handler() {
+	if ( req.readyState == 4 ) {
+	    if ( req.status == 200 ) {
+		var jsonObj = eval("("+req.responseText+")");
+		if (quote) { quote.clean() };
+		for (var i in jsonObj) {
+		    quote.add(jsonObj[i].text , jsonObj[i].source);
+		}
+	    }
+	}
+    }
+    // Every 12h call http_request
+    var t1 = setInterval( http_request, 1000*60*60*12); 
+    // Every 1min call write_in
+    var t2 = setInterval( write_in , 1000*60);
+	//]]>
+    </script>
+</div>
+[% END %]
+
+
+[% BLOCK footer %]
+    Il sito &egrave; stato interamente progettato e realizzato da me, con l'ausilio del potente <a href="http://www.vim.org/">Vim</a>, HTML e CSS.<br/>
+    This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+[% END %]

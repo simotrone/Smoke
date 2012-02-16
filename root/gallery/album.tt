@@ -1,0 +1,30 @@
+<h2>[% album.title %]</h2>
+
+<div id="photos">
+[% FOREACH photo IN photos %]
+[%  titolo = photo.title ; 
+    didascalia = photo.description; 
+    IF ( didascalia && didascalia.length < 30);
+	titolo = didascalia;
+	didascalia = NULL;
+    END;
+%]
+<div class="box photo">
+    <h3>[% titolo %]</h3> 
+    <a href="[% photo.original %]"><img title="[% photo.description || photo.title %]" alt="[% photo.title %]" src="[% photo.thumbnail %]" width="[% photo.thumb_width %]" height="[% photo.thumb_height %]"/></a>
+    [% IF didascalia %]
+    <p>[% didascalia %]</p>
+    <hr style="width: 50%"/>
+    [% END %]
+    <p>[% photo.published.dmy _' @ '_ photo.published.strftime('%H:%M') %]</p>
+</div>
+[% END %]
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    $('#photos').masonry({
+	columnWidth: 20,
+	itemSelector: '.box'
+    });
+//]]>
+</script>
