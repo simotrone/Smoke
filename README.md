@@ -61,11 +61,11 @@ Atom module is really more fast...
            XML::Feed->parse("simotrone_feed_atom.xml"),
        } ,
        "xml_rss" => sub {
-           $XML::Feed::RSS::PREFERRED_PARSER = "XML::RSS";
+           $XML::Feed::Format::RSS::PREFERRED_PARSER = "XML::RSS";
            XML::Feed->parse("simotrone_feed_rss.xml");
        },
        "xml_rss_libxml" => sub {
-           $XML::Feed::RSS::PREFERRED_PARSER = "XML::RSS::LibXML";
+           $XML::Feed::Format::RSS::PREFERRED_PARSER = "XML::RSS::LibXML";
            XML::Feed->parse("simotrone_feed_rss.xml");
        },
     } );
