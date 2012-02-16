@@ -6,6 +6,7 @@ This file documents the revision history for Perl extension Smoke.
 First version: 2010-11-09 21:51:56
 
 
+## Modules used
 
 + Catalyst project
 + Template::Toolkit
@@ -18,6 +19,13 @@ First version: 2010-11-09 21:51:56
 	+ jquery framework
 
 
-A lot of this work are made to study Catalyst and try a fast way to show photos from mobile phone.
+## Minimal description
+
+A lot of this work is made to study Catalyst and try a fast way to show photos from mobile phone.
+
+I have also Pg backend for Quotes and Links and DBI interface writes ad-hoc.
+
+
+## Use
 
 I take a pic with mobile phone, upload on picasa albums, and website gallery show it. It works.
